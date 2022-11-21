@@ -8,6 +8,7 @@ export enum TextPosition {
 }
 
 export const Icon: FC<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: ReactElement<any, any>
   text?: string
   textPosition?: TextPosition
@@ -30,7 +31,7 @@ export const Icon: FC<{
   text,
   textPosition = TextPosition.RIGHT,
   onClick,
-  hoverColor = 'text-red-500',
+  hoverColor = 'text-red-600',
   hoverDuration = 'duration-150',
   transition = 'ease-in',
   textClasses = '',
@@ -50,13 +51,11 @@ export const Icon: FC<{
     }
   }
 
-  // TODO: Fix hover property
+  console.log(hoverColor)
 
   return (
     <div
-      className={`flex justify-center items-center cursor-pointer ${transition} ${hoverDuration} hover:${
-        hoverColor ? hoverColor : 'text-red-500'
-      }`}
+      className={`flex justify-center items-center cursor-pointer ${transition} ${hoverDuration} hover:${hoverColor}`}
       onClick={onClick}
     >
       <span className={`flex items-center ${renderClass()}`}>

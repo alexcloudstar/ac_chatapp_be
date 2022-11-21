@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import React from 'react'
 
 import { Avatar } from './Avatar'
 
@@ -30,5 +29,5 @@ Initials.args = {
   },
   bgColor: '#3cb46c',
   initialsWidth: 30,
-  initialsHeight: 22,
+  initialsHeight: 30,
 }
