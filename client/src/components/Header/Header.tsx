@@ -5,6 +5,7 @@ import { MdOutlineKeyboardBackspace } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { SearchBar } from 'components/SearchBar'
+import { Header as ConversationHeader } from 'pages/chat/components'
 import { useCurrentUserQuery } from 'store/services/users'
 import { Button, Header, Modal } from 'stories'
 import { Icon } from 'stories/components/Icon/Icon'
@@ -67,7 +68,7 @@ const ChatHeader = () => {
           {!location.pathname.includes('chat') ? (
             <SearchBar />
           ) : (
-            <>Chatroom name</>
+            <ConversationHeader />
           )}
           <div className="flex items-center">
             <Button

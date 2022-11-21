@@ -1,8 +1,8 @@
-import { Fragment, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from 'store'
-import { useConversationsQuery } from 'store/services/conversations'
+import { useGetConversationsQuery } from 'store/services/conversations'
 import { ReduxQueryType } from 'types'
 
 import styles from './chatlist.module.css'
@@ -14,7 +14,7 @@ const ChatList = () => {
   const dispatch = useAppDispatch()
   const conversationsState = useAppSelector((state) => state.conversations)
 
-  const { data: conversations } = useConversationsQuery<
+  const { data: conversations } = useGetConversationsQuery<
     ReduxQueryType<ConversationType[]>
   >(null, {
     refetchOnMountOrArgChange: true,

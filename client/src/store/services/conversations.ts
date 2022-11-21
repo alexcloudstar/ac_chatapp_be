@@ -11,9 +11,20 @@ export const conversationsAPI = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4000' }),
   tagTypes: ['Conversations'],
   endpoints: (builder) => ({
-    conversations: builder.query<ConversationType[], null>({
+    getConversations: builder.query<ConversationType[], null>({
       query: () => ({
         url: '/chatrooms/joined',
+        method: API_METHODS.GET,
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+          Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
+        },
+      }),
+      providesTags: ['Conversations'],
+    }),
+    getConversation: builder.query<ConversationType, { roomId: number }>({
+      query: ({ roomId }) => ({
+        url: `/chatrooms/${roomId}`,
         method: API_METHODS.GET,
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -40,5 +51,8 @@ export const conversationsAPI = createApi({
   }),
 })
 
-export const { useConversationsQuery, useAddConversationMutation } =
-  conversationsAPI
+export const {
+  useGetConversationQuery,
+  useGetConversationsQuery,
+  useAddConversationMutation,
+} = conversationsAPI

@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import {
   useAddConversationMutation,
-  useConversationsQuery,
+  useGetConversationsQuery,
 } from 'store/services/conversations'
 import { useGetUsersQuery } from 'store/services/users'
 import { Toggle } from 'stories/components'
@@ -38,7 +38,7 @@ const CreateRoom: FC<{ toggleModal: () => void }> = ({ toggleModal }) => {
   const [addRoom] =
     useAddConversationMutation<ReduxQueryType<CreateRoomFormInputs>>()
 
-  const { refetch } = useConversationsQuery(null, {
+  const { refetch } = useGetConversationsQuery(null, {
     refetchOnMountOrArgChange: true,
   })
 
