@@ -16,6 +16,9 @@ export class MessageDto {
 
   @Expose()
   createdAt: Date;
+
+  @Expose()
+  chatroomId: number;
 }
 
 export class SendMessageDto {

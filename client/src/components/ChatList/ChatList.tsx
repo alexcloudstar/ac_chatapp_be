@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from 'store'
 import { useConversationsQuery } from 'store/services/conversations'
@@ -9,6 +10,7 @@ import { Preview } from './components'
 import { ConversationType } from './types'
 
 const ChatList = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const conversationsState = useAppSelector((state) => state.conversations)
 
@@ -27,6 +29,10 @@ const ChatList = () => {
     }
   }, [conversations, dispatch])
 
+  const onConversationClick = (conversationId: string) => {
+    navigate(`/chat/${conversationId}`)
+  }
+
   return (
     <div className={`${styles.container} pr-2 w-full`}>
       {conversationsState?.length ? (
@@ -42,10 +48,13 @@ const ChatList = () => {
           })
 
           return (
-            <>
+            <div
+              className="cursor-pointer"
+              key={conversation.id}
+              onClick={() => onConversationClick(conversation.id)}
+            >
               <Preview
                 conversationName={conversation.name}
-                key={conversation.id}
                 user={{
                   avatar: 'https://i.pravatar.cc/150?img=1',
                   username: lastMessage?.sender?.username,
@@ -57,7 +66,7 @@ const ChatList = () => {
                 }
                 time={lastMessageTime}
               />
-            </>
+            </div>
           )
         })
       ) : (

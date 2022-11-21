@@ -1,5 +1,5 @@
 import { Floating } from 'Layouts'
-import { Home, NotFound, Profile, Auth } from 'pages'
+import { Home, NotFound, Profile, Auth, Chat } from 'pages'
 
 import ProtectedRoute from './ProtectedRoute'
 
@@ -33,6 +33,17 @@ export const routes: RoutesType[] = [
       <ProtectedRoute>
         <Floating>
           <Profile />
+        </Floating>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    key: 'chat',
+    path: '/chat/:roomId',
+    component: (
+      <ProtectedRoute>
+        <Floating>
+          <Chat />
         </Floating>
       </ProtectedRoute>
     ),

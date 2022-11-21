@@ -42,3 +42,8 @@ export type ApiResponseState = {
   type: 'success' | 'error'
   message: string
 }
+
+export type SendMessageType = {
+  roomId: number
+  message: string
+}
