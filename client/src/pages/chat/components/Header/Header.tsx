@@ -11,8 +11,6 @@ const Header = () => {
     ReduxQueryType<ConversationType>
   >({ roomId: roomId ? +roomId : -1 })
 
-  console.log(conversation)
-
   return (
     <div className="conversation-header flex items-center justify-center">
       <h1 className="mr-2">{conversation?.name}</h1>

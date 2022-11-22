@@ -1,10 +1,11 @@
 import {
+  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
@@ -16,8 +17,14 @@ export class EventsGateway {
   server: Server;
 
   @SubscribeMessage('chat')
-  async chat(@MessageBody() data: string): Promise<string> {
+  async chat(
+    @MessageBody() data: string,
+    @ConnectedSocket() client: Socket,
+  ): Promise<string> {
     console.log(data);
+
+    client.broadcast.emit('chat', data);
+
     return data;
   }
 

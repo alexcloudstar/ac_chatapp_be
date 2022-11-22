@@ -4,7 +4,7 @@ export type MessagesType = {
   id: number
   message: string
   senderId: number
-  sender: Pick<User, 'id' | 'username' | 'avatar'>
+  sender: Pick<User, 'id' | 'name' | 'username' | 'avatar'>
   createdAt: string
 }
 

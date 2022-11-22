@@ -28,6 +28,7 @@ export class MessagesService {
           select: {
             id: true,
             username: true,
+            name: true,
           },
         },
       },
