@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import { BiSend } from 'react-icons/bi'
 import { useParams } from 'react-router-dom'
+import { io } from 'socket.io-client'
 
 import { useSendMessageMutation } from 'store/services/messages'
-import { ReduxQueryType, SendMessageType } from 'types'
+import { useCurrentUserQuery } from 'store/services/users'
+import { ReduxQueryType, SendMessageType, User } from 'types'
+
+const socket = io('http://localhost:4000')
 
 const Footer = () => {
   const [textMessage, setTextMessage] = useState<string>('')
@@ -11,13 +15,21 @@ const Footer = () => {
 
   const [sendMessage] =
     useSendMessageMutation<ReduxQueryType<SendMessageType>>()
+  const { data: user } = useCurrentUserQuery<ReduxQueryType<User>>()
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setTextMessage(e.target.value)
 
-  const onSendMessage = async () => {
+  const onSendMessage = () => {
     console.log('Message sent: ', textMessage)
-    await sendMessage({ roomId: roomId ? +roomId : -1, message: textMessage })
+    // await sendMessage({ roomId: roomId ? +roomId : -1, message: textMessage })
+
+    socket.emit('chat', {
+      textMessage,
+      username: user?.name ?? user?.username,
+    })
+
+    socket.emit('typing')
   }
 
   return (

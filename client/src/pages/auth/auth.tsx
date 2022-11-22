@@ -36,14 +36,14 @@ const Auth = () => {
       res = await signin(formData)
     }
 
+    if (res?.error)
+      return setApiErrorMessage('Something went wrong, please try again later')
+
     if (res?.error?.data.error === 'user_already_exists')
       return setApiErrorMessage(res?.error?.data.message)
 
     if (res?.error?.data.error === 'invalid_credentials')
       return setApiErrorMessage(res?.error?.data.message)
-
-    if (res?.error)
-      return setApiErrorMessage('Something went wrong, please try again later')
 
     setLocalStorage('accessToken', res.data.accessToken)
     refetch()
