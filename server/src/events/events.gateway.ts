@@ -21,8 +21,6 @@ export class EventsGateway {
     @MessageBody() data: string,
     @ConnectedSocket() client: Socket,
   ): Promise<string> {
-    console.log(data);
-
     client.broadcast.emit('chat', data);
 
     return data;

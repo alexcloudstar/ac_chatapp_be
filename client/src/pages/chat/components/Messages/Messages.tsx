@@ -33,17 +33,14 @@ const Messages = () => {
   }, [messages])
 
   useLayoutEffect(() => {
-    // if (messages) {
-    //   setMessagesState(messages)
-    // }
-
     socket.once('chat', (data: MessagesType) => {
-      console.log('Data', data)
       setMessagesState([...messagesState, data])
     })
-  }, [messagesState])
 
-  console.log(messages)
+    return () => {
+      socket.off('chat')
+    }
+  }, [messagesState])
 
   return (
     <div className="messages ">
