@@ -27,8 +27,13 @@ export class EventsGateway {
   }
 
   @SubscribeMessage('typing')
-  async typing(@MessageBody() data: string): Promise<string> {
-    console.log('typing');
+  async typing(
+    @MessageBody() data: string,
+    @ConnectedSocket() client: Socket,
+  ): Promise<string> {
+    console.log(data);
+    client.broadcast.emit('typing', data);
+
     return data;
   }
 

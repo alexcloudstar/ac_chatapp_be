@@ -24,8 +24,18 @@ const Footer = () => {
     useSendMessageMutation<ReduxQueryType<SendMessageType>>()
   const { data: user } = useCurrentUserQuery<ReduxQueryType<User>>()
 
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length > 0) {
+      socket.emit('typing', {
+        sender: { id: user?.id, username: user?.name || user?.username },
+      })
+    } else {
+      socket.off('typing')
+    }
+
+    // textareaRef.current?.scroll({ behavior: 'smooth' })
     setTextMessage(e.target.value)
+  }
 
   const onSendMessage = async () => {
     await sendMessage({ roomId: roomId ? +roomId : -1, message: textMessage })
@@ -41,6 +51,13 @@ const Footer = () => {
     textareaRef.current?.focus()
   }
 
+  const onKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      await onSendMessage()
+    }
+  }
+
   return (
     <div className="footer w-full flex items-center">
       <textarea
@@ -49,6 +66,7 @@ const Footer = () => {
         value={textMessage}
         onChange={onChange}
         ref={textareaRef}
+        onKeyDown={onKeyDown}
       />
       <button
         className="mt-5 mb-5 bg-blue-500 ease-in-out duration-300 hover:bg-blue-700 p-2 text-white rounded-xl w-24 flex items-center justify-around cursor-pointer h-20"

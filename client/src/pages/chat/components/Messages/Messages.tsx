@@ -1,4 +1,4 @@
-import { Fragment, useLayoutEffect, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
@@ -14,6 +14,20 @@ const socket = io('http://localhost:4000')
 
 const Messages = () => {
   const [messagesState, setMessagesState] = useState<MessagesType[]>([])
+  const [isTyping, setIsTyping] = useState<{
+    isTyping: boolean
+    user: {
+      id: number
+      username: string
+    }
+  }>({
+    isTyping: false,
+    user: {
+      id: -1,
+      username: '',
+    },
+  })
+
   const { roomId } = useParams()
   const { data: messages } = useGetRoomMessagesQuery<
     ReduxQueryType<MessagesType[]>
@@ -42,8 +56,20 @@ const Messages = () => {
     }
   }, [messagesState])
 
+  useLayoutEffect(() => {
+    socket.on('typing', (data) => {
+      setIsTyping({
+        isTyping: true,
+        user: {
+          id: data.sender.id,
+          username: data.sender.name || data.sender.username,
+        },
+      })
+    })
+  })
+
   return (
-    <div className="messages ">
+    <div className="messages overflow-y-auto pr-[30px]">
       {messagesState?.map((message) => (
         <Fragment key={message.id}>
           <div
@@ -56,6 +82,9 @@ const Messages = () => {
           </div>
         </Fragment>
       ))}
+      {user?.id !== isTyping?.user.id && isTyping.isTyping && (
+        <div>{isTyping.user.username} is typing...</div>
+      )}
     </div>
   )
 }
