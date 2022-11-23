@@ -3,7 +3,9 @@ import { useParams } from 'react-router-dom'
 
 import { ConversationType } from 'components/ChatList/types'
 import { useGetConversationQuery } from 'store/services/conversations'
-import { ReduxQueryType } from 'types'
+import { useCurrentUserQuery } from 'store/services/users'
+import { Icon } from 'stories/components'
+import { ReduxQueryType, User } from 'types'
 
 const Header = () => {
   const { roomId } = useParams()
@@ -11,14 +13,20 @@ const Header = () => {
     ReduxQueryType<ConversationType>
   >({ roomId: roomId ? +roomId : -1 })
 
+  const { data: user } = useCurrentUserQuery<ReduxQueryType<User>>()
+
+  const onDeleteRoom = () => {
+    console.log('delete room')
+  }
+
   return (
     <div className="conversation-header flex items-center justify-center">
       <h1 className="mr-2">{conversation?.name}</h1>
-      <div className="actions">
-        <button>
-          <FaTrashAlt />
-        </button>
-      </div>
+      {conversation?.userOwnerId === user?.id && (
+        <div className="actions">
+          <Icon icon={<FaTrashAlt />} onClick={onDeleteRoom} />
+        </div>
+      )}
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { FaTrashAlt } from 'react-icons/fa'
 import { FiCornerRightDown } from 'react-icons/fi'
 import { useParams } from 'react-router-dom'
 import { io } from 'socket.io-client'
@@ -7,6 +8,7 @@ import { MessagesType } from 'components/ChatList/types'
 import { useGetRoomMessagesQuery } from 'store/services/messages'
 import { useCurrentUserQuery } from 'store/services/users'
 import { Avatar } from 'stories'
+import { Icon } from 'stories/components'
 import { ReduxQueryType, User } from 'types'
 
 import { Message } from '../Message'
@@ -41,6 +43,8 @@ const Messages = () => {
   )
 
   const { data: user } = useCurrentUserQuery<ReduxQueryType<User>>()
+
+  const onDeleteMessage = () => {}
 
   useLayoutEffect(() => {
     if (messages) {
@@ -86,6 +90,13 @@ const Messages = () => {
               user.id === message.senderId ? 'justify-start' : 'justify-end'
             }`}
           >
+            {/* Todo: Add this just on hover */}
+            {user.id === message.senderId && (
+              <Icon
+                icon={<FaTrashAlt className="text-[20px] mr-8" />}
+                onClick={onDeleteMessage}
+              />
+            )}
             <Avatar user={message.sender} classes="mr-2" />
             <Message message={message} />
           </div>
