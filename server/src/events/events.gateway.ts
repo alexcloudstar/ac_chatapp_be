@@ -6,6 +6,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { ChatType, TypingType } from './types';
 
 @WebSocketGateway({
   cors: {
@@ -18,9 +19,9 @@ export class EventsGateway {
 
   @SubscribeMessage('chat')
   async chat(
-    @MessageBody() data: string,
+    @MessageBody() data: ChatType,
     @ConnectedSocket() client: Socket,
-  ): Promise<string> {
+  ): Promise<ChatType> {
     client.broadcast.emit('chat', data);
 
     return data;
@@ -28,10 +29,9 @@ export class EventsGateway {
 
   @SubscribeMessage('typing')
   async typing(
-    @MessageBody() data: string,
+    @MessageBody() data: TypingType,
     @ConnectedSocket() client: Socket,
-  ): Promise<string> {
-    console.log(data);
+  ): Promise<TypingType> {
     client.broadcast.emit('typing', data);
 
     return data;

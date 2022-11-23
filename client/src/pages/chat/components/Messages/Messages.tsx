@@ -1,4 +1,5 @@
-import { Fragment, useEffect, useLayoutEffect, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { FiCornerRightDown } from 'react-icons/fi'
 import { useParams } from 'react-router-dom'
 import { io } from 'socket.io-client'
 
@@ -13,6 +14,7 @@ import { Message } from '../Message'
 const socket = io('http://localhost:4000')
 
 const Messages = () => {
+  const bottomRef = useRef<HTMLDivElement>(null)
   const [messagesState, setMessagesState] = useState<MessagesType[]>([])
   const [isTyping, setIsTyping] = useState<{
     isTyping: boolean
@@ -57,16 +59,23 @@ const Messages = () => {
   }, [messagesState])
 
   useLayoutEffect(() => {
-    socket.on('typing', (data) => {
-      setIsTyping({
-        isTyping: true,
-        user: {
-          id: data.sender.id,
-          username: data.sender.name || data.sender.username,
-        },
-      })
-    })
+    socket.on(
+      'typing',
+      (data: { sender: Pick<User, 'id' | 'username' | 'name'> }) => {
+        setIsTyping({
+          isTyping: true,
+          user: {
+            id: data.sender.id,
+            username: data.sender.name || data.sender.username,
+          },
+        })
+      }
+    )
   })
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messagesState])
 
   return (
     <div className="messages overflow-y-auto pr-[30px]">
@@ -85,6 +94,8 @@ const Messages = () => {
       {user?.id !== isTyping?.user.id && isTyping.isTyping && (
         <div>{isTyping.user.username} is typing...</div>
       )}
+
+      <div ref={bottomRef} />
     </div>
   )
 }
