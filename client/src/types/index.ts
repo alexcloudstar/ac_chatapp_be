@@ -47,3 +47,8 @@ export type SendMessageType = {
   roomId: number
   message: string
 }
+
+export type RemoveMessageType = {
+  roomId: number
+  messageId: string
+}

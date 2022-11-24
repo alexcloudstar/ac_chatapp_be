@@ -1,10 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-import {
-  ConversationType,
-  CreateConversationType,
-} from 'components/ChatList/types'
-import { API_METHODS, SendMessageType } from 'types'
+import { ConversationType } from 'components/ChatList/types'
+import { API_METHODS, RemoveMessageType, SendMessageType } from 'types'
 
 export const messagesAPI = createApi({
   reducerPath: 'messagesAPI',
@@ -34,7 +31,23 @@ export const messagesAPI = createApi({
       }),
       invalidatesTags: ['Messages'],
     }),
+    deleteMessage: builder.mutation<RemoveMessageType, RemoveMessageType>({
+      query: (payload: RemoveMessageType) => ({
+        url: `/messages/${payload.roomId}`,
+        method: API_METHODS.DELETE,
+        body: { messageId: payload.messageId },
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+          Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
+        },
+      }),
+      invalidatesTags: ['Messages'],
+    }),
   }),
 })
 
-export const { useGetRoomMessagesQuery, useSendMessageMutation } = messagesAPI
+export const {
+  useGetRoomMessagesQuery,
+  useSendMessageMutation,
+  useDeleteMessageMutation,
+} = messagesAPI
