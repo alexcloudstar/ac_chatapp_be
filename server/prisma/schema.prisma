@@ -43,9 +43,9 @@ model Chatroom {
 model Message {
   id         Int      @id @default(autoincrement())
   message    String
-  chatroom   Chatroom @relation(fields: [chatroomId], references: [id])
+  chatroom   Chatroom @relation(fields: [chatroomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   chatroomId Int
-  sender     User     @relation("sender", fields: [senderId], references: [id])
+  sender     User     @relation("sender", fields: [senderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   senderId   Int
   createdAt  DateTime @default(now())
 }

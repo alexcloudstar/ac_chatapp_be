@@ -19,7 +19,9 @@ const Header = () => {
     console.log('delete room')
   }
 
-  const onChangeName = () => {}
+  const onChangeName = () => {
+    console.log('change name')
+  }
 
   return (
     <div className="conversation-header flex items-center justify-center">

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { Chatroom, User } from '@prisma/client';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ChatroomsService } from './chatrooms.service';
@@ -67,5 +75,14 @@ export class ChatroomsController {
     @Body() body: { userId: string },
   ): Promise<Chatroom> {
     return this.chatroomsService.leave(+id, +body.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:id')
+  delete(
+    @Param('id') id: string,
+    @CurrentUser() user: User,
+  ): Promise<Chatroom> {
+    return this.chatroomsService.delete(+id, user?.id);
   }
 }
