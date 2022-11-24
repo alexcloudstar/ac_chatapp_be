@@ -54,12 +54,21 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('/:id')
+  @Patch('update-user/:id')
   updateUser(
     @Param('id') id: string,
     @Body() body: UpdateUserDto,
     @CurrentUser() user: User,
   ) {
     return this.usersService.update(parseInt(id), body, user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/update-online-status')
+  updateIsOnlineStatus(
+    @CurrentUser() user: User,
+    @Body() body: { isOnline: boolean },
+  ) {
+    return this.usersService.updateIsOnlineStatus(user.id, body.isOnline);
   }
 }
