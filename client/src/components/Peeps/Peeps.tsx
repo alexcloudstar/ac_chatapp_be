@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { io } from 'socket.io-client'
 import { SwiperSlide } from 'swiper/react'
 
 import { useGetUsersQuery } from 'store/services/users'
@@ -7,16 +8,44 @@ import { ReduxQueryType, User } from 'types'
 
 import { PeepsSlider } from './components'
 
+const socket = io('http://localhost:4000')
+
 const Peeps = () => {
-  const { data: users } = useGetUsersQuery<ReduxQueryType<User[]>>()
-  const [isOnline, setIsOnline] = useState(false)
+  const [peeps, setPeeps] = useState<User[]>([])
+  const { data: users, refetch } = useGetUsersQuery<ReduxQueryType<User[]>>()
+
+  useEffect(() => {
+    if (users) {
+      setPeeps(users)
+    }
+  }, [users])
+
+  useEffect(() => {
+    socket.once(
+      'isOnline',
+      (data: { userId: User['id']; isOnline: User['isOnline'] }) => {
+        refetch()
+        setPeeps((prev) => {
+          const index = prev.findIndex((user) => user.id === data.userId)
+          const newPeeps = [...prev]
+          newPeeps[index] = { ...newPeeps[index], isOnline: data.isOnline }
+
+          return newPeeps
+        })
+      }
+    )
+
+    return () => {
+      socket.off('isOnline')
+    }
+  }, [peeps, refetch])
 
   return (
     <>
       <h2 className="mt-[25px] mb-[15px]">Peeps</h2>
       <div className="w-full">
         <PeepsSlider>
-          {users?.map((user: User) => (
+          {peeps?.map((user: User) => (
             <SwiperSlide key={user.id}>
               <>
                 <Peep
@@ -27,7 +56,7 @@ const Peeps = () => {
                 />
                 <div
                   className={`online-status ${
-                    isOnline ? 'bg-[#7cd452]' : 'bg-white'
+                    user?.isOnline ? 'bg-[#7cd452]' : 'bg-white'
                   } w-3.5 h-3.5 absolute bottom-0 left-2 rounded-[50px]`}
                 ></div>
               </>
@@ -38,15 +67,5 @@ const Peeps = () => {
     </>
   )
 }
-
-/*
-    width: 15px;
-    height: 15px;
-    background: #7cd452;
-    border-radius: 50px;
-    position: absolute;
-    bottom: 0;
-    left: 5px;
- */
 
 export default Peeps

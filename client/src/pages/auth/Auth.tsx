@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { io } from 'socket.io-client'
 
 import { useSigninMutation, useSignupMutation } from 'store/services/auth'
 import { useCurrentUserQuery } from 'store/services/users'
-import { AuthFormInputs, ReduxQueryType } from 'types'
+import { AuthFormInputs } from 'types'
 import { setLocalStorage } from 'utils/localStorage'
+
+const socket = io('http://localhost:4000')
 
 const Auth = () => {
   const navigate = useNavigate()
@@ -47,6 +50,12 @@ const Auth = () => {
 
     setLocalStorage('accessToken', res.data.accessToken)
     refetch()
+
+    socket.emit('isOnline', {
+      userId: 11,
+      isOnline: true,
+    })
+
     navigate('/')
   }
 

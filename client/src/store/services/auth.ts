@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-import { API_METHODS, AuthFormInputs } from 'types'
+import { API_METHODS, AuthFormInputs, User } from 'types'
 
 export const authAPI = createApi({
   reducerPath: 'authAPI',
@@ -24,9 +24,9 @@ export const authAPI = createApi({
       }),
       invalidatesTags: ['Auth'],
     }),
-    signout: builder.mutation<null, null>({
-      query: () => ({
-        url: 'signup/',
+    signout: builder.mutation<User['id'], User['id']>({
+      query: (payload: User['id']) => ({
+        url: `signout/${payload}`,
         method: API_METHODS.POST,
       }),
       invalidatesTags: ['Auth'],
@@ -34,5 +34,8 @@ export const authAPI = createApi({
   }),
 })
 
-export const { useSigninMutation, useSignupMutation, useSignoutMutation } =
-  authAPI
+export const {
+  useSigninMutation,
+  useSignupMutation,
+  useSignoutMutation,
+} = authAPI

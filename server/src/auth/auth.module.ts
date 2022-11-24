@@ -6,6 +6,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from '../utils/jwt/local.strategy';
 import { JwtStrategy } from '../utils/jwt/jwt.strategy';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { JwtStrategy } from '../utils/jwt/jwt.strategy';
   providers: [
     AuthService,
     PrismaService,
+    UsersService,
     JwtService,
     LocalStrategy,
     JwtStrategy,

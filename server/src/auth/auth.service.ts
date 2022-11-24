@@ -8,10 +8,16 @@ import * as argon2 from 'argon2';
 
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
+import { Session } from 'inspector';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+    private usersService: UsersService,
+  ) {}
 
   async signup(
     email: User['email'],
@@ -42,6 +48,8 @@ export class AuthService {
       username: newUser.username,
       sub: newUser.id,
     };
+
+    await this.usersService.updateIsOnlineStatus(newUser.id, true);
 
     return {
       accessToken: this.jwtService.sign(payload, {
@@ -84,11 +92,23 @@ export class AuthService {
       sub: user.id,
     };
 
+    await this.usersService.updateIsOnlineStatus(user.id, true);
+
     return {
       accessToken: this.jwtService.sign(payload, {
         secret: process.env.JWT_SECRET,
         expiresIn: process.env.JWT_EXPIRES_IN,
       }),
+    };
+  }
+
+  async signout(id: User['id']): Promise<{ message: string }> {
+    console.log(id);
+
+    await this.usersService.updateIsOnlineStatus(11, true);
+
+    return {
+      message: 'Signed out',
     };
   }
 }

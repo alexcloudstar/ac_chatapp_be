@@ -9,7 +9,7 @@ import {
   useGetRoomMessagesQuery,
 } from 'store/services/messages'
 import { useCurrentUserQuery } from 'store/services/users'
-import { Avatar, Modal } from 'stories'
+import { Avatar } from 'stories'
 import { Icon } from 'stories/components'
 import { ReduxQueryType, RemoveMessageType, User } from 'types'
 

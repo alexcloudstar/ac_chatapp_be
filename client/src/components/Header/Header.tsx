@@ -3,6 +3,7 @@ import { FaPlus } from 'react-icons/fa'
 import { FiLogOut } from 'react-icons/fi'
 import { MdOutlineKeyboardBackspace } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { io } from 'socket.io-client'
 
 import { SearchBar } from 'components/SearchBar'
 import { Header as ConversationHeader } from 'pages/chat/components'
@@ -12,9 +13,12 @@ import { Icon } from 'stories/components/Icon/Icon'
 import { ReduxQueryType, User } from 'types'
 import { removeLocalStorage } from 'utils/localStorage'
 
+import { useSignoutMutation } from '../../store/services/auth'
 import { CreateRoom } from '../CreateRoom'
 
 import styles from './header.module.css'
+
+const socket = io('http://localhost:4000')
 
 const ChatHeader = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -25,13 +29,21 @@ const ChatHeader = () => {
 
   const { data: user } = useCurrentUserQuery<ReduxQueryType<User>>()
 
+  const [signout] = useSignoutMutation()
+
   const toggleModal = () => setShowModal(!showModal)
 
-  const logout = useCallback(() => {
-    removeLocalStorage('accessToken')
+  const logout = async () => {
+    await signout(11)
 
-    navigate('/auth')
-  }, [navigate])
+    socket.emit('isOnline', {
+      userId: 11,
+      isOnline: false,
+    })
+
+    // removeLocalStorage('accessToken')
+    // navigate('/auth')
+  }
 
   const onNavigateBack = () => navigate(-1)
 

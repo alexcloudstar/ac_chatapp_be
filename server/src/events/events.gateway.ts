@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatType, TypingType } from './types';
+import { User } from '@prisma/client';
 
 @WebSocketGateway({
   cors: {
@@ -40,5 +41,20 @@ export class EventsGateway {
   @SubscribeMessage('punish')
   async punish(@MessageBody() data: string): Promise<string> {
     return data;
+  }
+
+  @SubscribeMessage('unpunish')
+  async unpunish(@MessageBody() data: string): Promise<string> {
+    return data;
+  }
+
+  @SubscribeMessage('isOnline')
+  async isOnline(
+    @MessageBody() data: { userId: User['id']; isOnline: User['isOnline'] },
+    @ConnectedSocket() client: Socket,
+  ): Promise<boolean> {
+    client.broadcast.emit('isOnline', data);
+
+    return data.isOnline;
   }
 }

@@ -13,6 +13,7 @@ export type User = {
   avatar: string
   createdAt: string
   password?: string
+  isOnline?: boolean
 }
 
 export type UserComponentType = {
