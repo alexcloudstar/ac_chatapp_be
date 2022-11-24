@@ -48,6 +48,20 @@ export const conversationsAPI = createApi({
       }),
       invalidatesTags: ['Conversations'],
     }),
+    deleteConversation: builder.mutation<
+      ConversationType['id'],
+      ConversationType['id']
+    >({
+      query: (payload: ConversationType['id']) => ({
+        url: `/chatrooms/${payload}`,
+        method: API_METHODS.DELETE,
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+          Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
+        },
+      }),
+      invalidatesTags: ['Conversations'],
+    }),
   }),
 })
 
@@ -55,4 +69,5 @@ export const {
   useGetConversationQuery,
   useGetConversationsQuery,
   useAddConversationMutation,
+  useDeleteConversationMutation,
 } = conversationsAPI

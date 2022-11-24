@@ -9,7 +9,7 @@ import {
   useGetRoomMessagesQuery,
 } from 'store/services/messages'
 import { useCurrentUserQuery } from 'store/services/users'
-import { Avatar } from 'stories'
+import { Avatar, Modal } from 'stories'
 import { Icon } from 'stories/components'
 import { ReduxQueryType, RemoveMessageType, User } from 'types'
 
@@ -108,11 +108,11 @@ const Messages = () => {
         <Fragment key={message.id}>
           <div
             className={`flex mt-6 mb-6 ${
-              user.id === message.senderId ? 'justify-start' : 'justify-end'
+              user?.id === message.senderId ? 'justify-start' : 'justify-end'
             } group`}
           >
             {/* Todo: Add this just on hover */}
-            {user.id === message.senderId && (
+            {user?.id === message.senderId && (
               <Icon
                 icon={
                   <FaTrashAlt className="text-[20px] mr-8 hidden group-hover:block cursor-pointer" />
