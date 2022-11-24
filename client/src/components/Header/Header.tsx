@@ -34,15 +34,15 @@ const ChatHeader = () => {
   const toggleModal = () => setShowModal(!showModal)
 
   const logout = async () => {
-    await signout(11)
+    await signout(user?.id)
 
     socket.emit('isOnline', {
-      userId: 11,
+      userId: user?.id,
       isOnline: false,
     })
 
-    // removeLocalStorage('accessToken')
-    // navigate('/auth')
+    removeLocalStorage('accessToken')
+    navigate('/auth')
   }
 
   const onNavigateBack = () => navigate(-1)

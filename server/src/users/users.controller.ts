@@ -65,7 +65,7 @@ export class UsersController {
 
   @Patch('/update-online-status/:id')
   updateIsOnlineStatus(
-    @Param('id') id: any,
+    @Param('id') id: User['id'],
     @Body() body: { isOnline: boolean },
   ) {
     return this.usersService.updateIsOnlineStatus(+id, body.isOnline);

@@ -40,7 +40,7 @@ export class AuthController {
   }
 
   @Post('/signout/:id')
-  signOut(@Param('id') id: any): Promise<{ message: string }> {
-    return this.authService.signout(id);
+  signOut(@Param('id') id: string): Promise<{ message: string }> {
+    return this.authService.signout(+id);
   }
 }

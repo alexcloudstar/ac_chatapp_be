@@ -84,7 +84,6 @@ export class UsersService {
         data: { isOnline },
       });
     } catch (error) {
-      // console.log(error);
       throw new NotFoundException('User not found');
     }
   }
