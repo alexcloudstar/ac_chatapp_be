@@ -35,8 +35,9 @@ const CreateRoom: FC<{ toggleModal: () => void }> = ({ toggleModal }) => {
 
   const { data: users } = useGetUsersQuery<ReduxQueryType<User[]>>()
 
-  const [addRoom] =
-    useAddConversationMutation<ReduxQueryType<CreateRoomFormInputs>>()
+  const [addRoom] = useAddConversationMutation<
+    ReduxQueryType<CreateRoomFormInputs>
+  >()
 
   const { refetch } = useGetConversationsQuery(null, {
     refetchOnMountOrArgChange: true,
@@ -76,7 +77,7 @@ const CreateRoom: FC<{ toggleModal: () => void }> = ({ toggleModal }) => {
   return (
     <>
       <form
-        action="POST"
+        method="POST"
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-center items-end"
       >

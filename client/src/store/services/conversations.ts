@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {
   ConversationType,
   CreateConversationType,
+  UpdateConversationType,
 } from 'components/ChatList/types'
 import { API_METHODS } from 'types'
 
@@ -48,6 +49,21 @@ export const conversationsAPI = createApi({
       }),
       invalidatesTags: ['Conversations'],
     }),
+    updateConversation: builder.mutation<
+      UpdateConversationType,
+      UpdateConversationType
+    >({
+      query: (payload: UpdateConversationType) => ({
+        url: `/chatrooms/${payload.id}`,
+        method: API_METHODS.PATCH,
+        body: { ...payload },
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+          Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}`,
+        },
+      }),
+      invalidatesTags: ['Conversations'],
+    }),
     deleteConversation: builder.mutation<
       ConversationType['id'],
       ConversationType['id']
@@ -69,5 +85,6 @@ export const {
   useGetConversationQuery,
   useGetConversationsQuery,
   useAddConversationMutation,
+  useUpdateConversationMutation,
   useDeleteConversationMutation,
 } = conversationsAPI
