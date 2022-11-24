@@ -4,8 +4,9 @@ import {
   Param,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Chatroom } from '@prisma/client';
+import { Chatroom, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { UpdateChatroomDto } from './dto/update-room.dto';
 
 @Injectable()
 export class ChatroomsService {
@@ -77,6 +78,28 @@ export class ChatroomsService {
       include: {
         users: true,
       },
+    });
+  }
+
+  async update(
+    roomId: Chatroom['id'],
+    body: UpdateChatroomDto,
+    user: User,
+  ): Promise<Chatroom> {
+    const room = await this.prisma.chatroom.findUnique({
+      where: { id: roomId },
+    });
+
+    if (room.userOwnerId !== user.id)
+      throw new UnauthorizedException({
+        message: 'You are not the owner of this chatroom',
+        error: 'unauthorized',
+        statusCode: 401,
+      });
+
+    return this.prisma.chatroom.update({
+      where: { id: roomId },
+      data: { ...body },
     });
   }
 
