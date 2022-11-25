@@ -34,7 +34,7 @@ export const usersAPI = createApi({
     updateUser: builder.mutation<User, { id: number; body: IProfileFormProps }>(
       {
         query: (payload: { id: number; body: IProfileFormProps }) => ({
-          url: `/users/${payload.id}`,
+          url: `/users/update-user/${payload.id}`,
           method: API_METHODS.PATCH,
           body: { ...payload.body },
           headers: {
@@ -50,5 +50,8 @@ export const usersAPI = createApi({
   }),
 })
 
-export const { useCurrentUserQuery, useGetUsersQuery, useUpdateUserMutation } =
-  usersAPI
+export const {
+  useCurrentUserQuery,
+  useGetUsersQuery,
+  useUpdateUserMutation,
+} = usersAPI

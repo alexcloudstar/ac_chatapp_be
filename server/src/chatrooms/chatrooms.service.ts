@@ -1,6 +1,12 @@
-import { BadRequestException, Injectable, Param } from '@nestjs/common';
-import { Chatroom } from '@prisma/client';
+import {
+  BadRequestException,
+  Injectable,
+  Param,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { Chatroom, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { UpdateChatroomDto } from './dto/update-room.dto';
 
 @Injectable()
 export class ChatroomsService {
@@ -75,8 +81,46 @@ export class ChatroomsService {
     });
   }
 
-  delete(chatroomId: number): Promise<Chatroom> {
-    return this.prisma.chatroom.delete({ where: { id: chatroomId } });
+  async update(
+    roomId: Chatroom['id'],
+    body: UpdateChatroomDto,
+    user: User,
+  ): Promise<Chatroom> {
+    const room = await this.prisma.chatroom.findUnique({
+      where: { id: roomId },
+    });
+
+    if (room.userOwnerId !== user.id)
+      throw new UnauthorizedException({
+        message: 'You are not the owner of this chatroom',
+        error: 'unauthorized',
+        statusCode: 401,
+      });
+
+    return this.prisma.chatroom.update({
+      where: { id: roomId },
+      data: { ...body },
+    });
+  }
+
+  async delete(chatroomId: number, userId?: number): Promise<Chatroom> {
+    try {
+      const room = await this.prisma.chatroom.findUnique({
+        where: { id: chatroomId },
+      });
+
+      if (room.userOwnerId !== userId)
+        throw new UnauthorizedException({
+          message: 'You are not the owner of this chatroom',
+          error: 'unauthorized',
+          statusCode: 401,
+        });
+
+      return this.prisma.chatroom.delete({ where: { id: chatroomId } });
+    } catch (e) {
+      console.log(e);
+      throw new BadRequestException(e);
+    }
   }
 
   async join(chatroomId: number, userId: number): Promise<Chatroom> {

@@ -28,7 +28,7 @@ export class MessagesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('/room/:roomId')
   getRoomMessages(@Param('roomId') roomId: string) {
     return this.messagesService.getRoomMessages(+roomId);
   }

@@ -76,4 +76,15 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
   }
+
+  updateIsOnlineStatus(id: number, isOnline: boolean) {
+    try {
+      return this.prisma.user.update({
+        where: { id },
+        data: { isOnline },
+      });
+    } catch (error) {
+      throw new NotFoundException('User not found');
+    }
+  }
 }

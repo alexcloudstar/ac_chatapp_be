@@ -33,4 +33,7 @@ export class UserDto {
 
   @Expose()
   accessToken: string;
+
+  @Expose()
+  isOnline: boolean;
 }

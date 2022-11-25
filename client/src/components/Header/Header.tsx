@@ -1,18 +1,24 @@
 import { useCallback, useState } from 'react'
-import { FaPlus, FaSearch } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa'
 import { FiLogOut } from 'react-icons/fi'
 import { MdOutlineKeyboardBackspace } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { io } from 'socket.io-client'
 
+import { SearchBar } from 'components/SearchBar'
+import { Header as ConversationHeader } from 'pages/chat/components'
 import { useCurrentUserQuery } from 'store/services/users'
-import { Button, Header, Modal, Search } from 'stories'
+import { Button, Header, Modal } from 'stories'
 import { Icon } from 'stories/components/Icon/Icon'
 import { ReduxQueryType, User } from 'types'
 import { removeLocalStorage } from 'utils/localStorage'
 
+import { useSignoutMutation } from '../../store/services/auth'
 import { CreateRoom } from '../CreateRoom'
 
 import styles from './header.module.css'
+
+const socket = io('http://localhost:4000')
 
 const ChatHeader = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -23,13 +29,21 @@ const ChatHeader = () => {
 
   const { data: user } = useCurrentUserQuery<ReduxQueryType<User>>()
 
+  const [signout] = useSignoutMutation()
+
   const toggleModal = () => setShowModal(!showModal)
 
-  const logout = useCallback(() => {
-    removeLocalStorage('accessToken')
+  const logout = async () => {
+    await signout(user?.id)
 
+    socket.emit('isOnline', {
+      userId: user?.id,
+      isOnline: false,
+    })
+
+    removeLocalStorage('accessToken')
     navigate('/auth')
-  }, [navigate])
+  }
 
   const onNavigateBack = () => navigate(-1)
 
@@ -48,7 +62,8 @@ const ChatHeader = () => {
         </div>
         <div className="flex justify-between items-center cursor-pointer">
           <div className="hide-mobile" onClick={onNavigateProfile}>
-            {location.pathname !== '/profile' ? (
+            {location.pathname !== '/profile' &&
+            !location.pathname.includes('chat') ? (
               <Header user={user} />
             ) : (
               <Icon
@@ -62,16 +77,15 @@ const ChatHeader = () => {
             )}
           </div>
 
-          <Search
-            query=""
-            placeholder="Search for rooms"
-            icon={<FaSearch />}
-            classes={styles.customInput}
-          />
+          {!location.pathname.includes('chat') ? (
+            <SearchBar />
+          ) : (
+            <ConversationHeader />
+          )}
           <div className="flex items-center">
             <Button
               icon={<FaPlus />}
-              classes={`${styles.btnCreateRoom} bg-blue-500  ease-in-out duration-300 hover:bg-blue-700`}
+              classes={`${styles.btnCreateRoom} bg-blue-500 ease-in-out duration-300 hover:bg-blue-700`}
               onClick={toggleModal}
             />
 
