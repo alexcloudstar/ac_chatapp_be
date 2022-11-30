@@ -52,6 +52,7 @@ export class ChatroomsController {
       body.isPrivate,
       body.name,
       body.profanityWords,
+      body.roomAvatar,
     );
   }
 

@@ -12,4 +12,7 @@ export class CreateChatroomDto {
 
   @IsString({ each: true })
   profanityWords: string[];
+
+  @IsString()
+  roomAvatar: string;
 }

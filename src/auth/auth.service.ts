@@ -9,7 +9,7 @@ import * as argon2 from 'argon2';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { Session } from 'inspector';
+import { AvatarGenerator } from 'random-avatar-generator';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +25,7 @@ export class AuthService {
     password: User['password'],
   ): Promise<{ accessToken: string }> {
     const user = await this.prisma.user.findUnique({ where: { email } });
+    const generator = new AvatarGenerator();
 
     if (user)
       throw new BadRequestException({
@@ -40,6 +41,7 @@ export class AuthService {
         email,
         username,
         password: hash,
+        avatar: generator.generateRandomAvatar(),
       },
     });
 

@@ -29,6 +29,7 @@ export class MessagesService {
             id: true,
             username: true,
             name: true,
+            avatar: true,
           },
         },
       },
