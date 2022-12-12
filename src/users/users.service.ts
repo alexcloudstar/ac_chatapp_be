@@ -15,12 +15,12 @@ import * as argon2 from 'argon2';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  find(id: number, currentUserId?: number): Promise<User> {
+  find(username: string): Promise<User> {
     return this.prisma.user.findUnique({
-      where: { id },
-      include: {
-        punishments: id === currentUserId,
-      },
+      where: { username },
+      // include: {
+      //   punishments: id === currentUserId,
+      // },
     });
   }
 
