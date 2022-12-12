@@ -37,6 +37,7 @@ model Chatroom {
   isPrivate      Boolean      @default(false)
   createdAt      DateTime     @default(now())
   Punishment     Punishment[]
+  roomAvatar     String       @default("")
 
   @@map("chatrooms")
 }

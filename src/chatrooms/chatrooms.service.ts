@@ -37,6 +37,7 @@ export class ChatroomsService {
     isPrivate: boolean,
     name: string,
     profanityWords: string[],
+    roomAvatar: string,
   ): Promise<Chatroom> {
     const usersId = await this.prisma.user.findMany({
       where: {
@@ -65,6 +66,7 @@ export class ChatroomsService {
         isPrivate,
         name,
         profanityWords,
+        roomAvatar,
         users: {
           connect: usersArrIds,
         },

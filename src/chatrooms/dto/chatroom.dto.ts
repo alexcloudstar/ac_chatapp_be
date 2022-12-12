@@ -43,4 +43,7 @@ export class ChatroomDto {
 
   @Expose()
   profanityWords: string[];
+
+  @Expose()
+  roomAvatar: string;
 }
