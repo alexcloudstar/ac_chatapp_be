@@ -94,14 +94,18 @@ export class AuthService {
       sub: user.id,
     };
 
-    await this.usersService.updateIsOnlineStatus(user.id, true);
+    try {
+      await this.usersService.updateIsOnlineStatus(user.id, true);
 
-    return {
-      accessToken: this.jwtService.sign(payload, {
-        secret: process.env.JWT_SECRET,
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      }),
-    };
+      return {
+        accessToken: this.jwtService.sign(payload, {
+          secret: process.env.JWT_SECRET,
+          expiresIn: process.env.JWT_EXPIRES_IN,
+        }),
+      };
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async signout(id: User['id']): Promise<{ message: string }> {
