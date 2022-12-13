@@ -27,7 +27,11 @@ export class ChatroomDto {
   messages: MessageDto[];
 
   @Transform(({ obj }: { obj: { users: User[] } }) =>
-    obj.users?.map((user) => ({ id: user.id })),
+    obj.users?.map((user) => ({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    })),
   )
   @Expose()
   users: { id: number }[];
