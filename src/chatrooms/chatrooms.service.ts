@@ -120,16 +120,14 @@ export class ChatroomsService {
 
     usersArrIds.push({ id: room.userOwnerId });
 
-
     return this.prisma.chatroom.update({
       where: { id: roomId },
       data: {
         ...body,
         users: {
-          connect: usersArrIds,
+          set: usersArrIds,
         },
       },
-
       include: {
         users: true,
       },
