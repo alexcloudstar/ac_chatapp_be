@@ -15,5 +15,5 @@ export class UpdateChatroomDto {
 
   @IsString({ each: true })
   @IsOptional()
-  userUsernames: string[];
+  users?: string[];
 }
