@@ -30,6 +30,11 @@ export class AdminService {
       data: {
         isAdmin: !user.isAdmin,
       },
+      select: {
+        id: true,
+        email: true,
+        isAdmin: true,
+      },
     });
   }
 

@@ -15,7 +15,7 @@ export class AdminController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post('make-admin')
   makeAdmin(@Body('email') email: string) {
     return this.adminService.toggleAdmin(email);
   }
