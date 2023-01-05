@@ -17,14 +17,3 @@ export class CreatePunishDto {
   @IsNumber()
   duration: number;
 }
-
-export class UnpunishDto {
-  @IsNumber()
-  chatroomId: Chatroom['id'];
-
-  @IsNumber()
-  userId: User['id'];
-
-  @IsNumber()
-  punishmentId: number;
-}

@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { CreatePunishDto, UnpunishDto } from './dto/create-punish.dto';
+import { CreatePunishDto } from './dto/create-punish.dto';
 import { CurrentUser } from '../users/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../utils/jwt/jwt-auth.guard';
+import { Punishment } from '@prisma/client';
 
 @Controller('admin')
 export class AdminController {
@@ -34,13 +43,14 @@ export class AdminController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('unpunish')
-  unpunishUser(@Body() body: UnpunishDto, @CurrentUser() currentUser) {
-    return this.adminService.unpunishUser(
-      +body.chatroomId,
-      currentUser,
-      +body.userId,
-      +body.punishmentId,
-    );
+  @Delete('/:punishmentId')
+  unpunishUser(@Param('punishmentId') punishmentId: Punishment['id']) {
+    return this.adminService.unpunishUser(punishmentId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('checkPunishments/:userId')
+  checkPunishments(@Param('userId') userId: Punishment['userId']) {
+    return this.adminService.checkPunishments(userId);
   }
 }
