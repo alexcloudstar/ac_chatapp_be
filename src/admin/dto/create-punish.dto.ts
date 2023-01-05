@@ -2,10 +2,10 @@ import { Chatroom, PunishmentType, User } from '@prisma/client';
 import { IsNumber, IsString } from 'class-validator';
 
 export class CreatePunishDto {
-  @IsString()
+  @IsNumber()
   chatroomId: Chatroom['id'];
 
-  @IsString()
+  @IsNumber()
   userId: User['id'];
 
   @IsString()
@@ -16,4 +16,15 @@ export class CreatePunishDto {
 
   @IsNumber()
   duration: number;
+}
+
+export class UnpunishDto {
+  @IsNumber()
+  chatroomId: Chatroom['id'];
+
+  @IsNumber()
+  userId: User['id'];
+
+  @IsNumber()
+  punishmentId: number;
 }

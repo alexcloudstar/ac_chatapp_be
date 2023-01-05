@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { Chatroom, PunishmentType, User } from '@prisma/client';
+import { Chatroom, Punishment, PunishmentType, User } from '@prisma/client';
 
 @Injectable()
 export class AdminService {
@@ -63,5 +67,32 @@ export class AdminService {
         duration,
       },
     });
+  }
+
+  async unpunishUser(
+    chatroomId: Chatroom['id'],
+    currentUser: User,
+    userId: User['id'],
+    punishmentId: Punishment['id'],
+  ) {
+    try {
+      const user = await this.prismaService.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!user) throw new NotFoundException('User not found');
+
+      await this.prismaService.punishment.delete({
+        where: {
+          id: punishmentId,
+        },
+      });
+
+      return 'Punishment removed successfully';
+    } catch (err: any) {
+      throw new BadRequestException(err);
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { CreatePunishDto } from './dto/create-punish.dto';
+import { CreatePunishDto, UnpunishDto } from './dto/create-punish.dto';
 import { CurrentUser } from '../users/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../utils/jwt/jwt-auth.guard';
 
@@ -30,6 +30,17 @@ export class AdminController {
       body.reason,
       body.type,
       body.duration,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('unpunish')
+  unpunishUser(@Body() body: UnpunishDto, @CurrentUser() currentUser) {
+    return this.adminService.unpunishUser(
+      +body.chatroomId,
+      currentUser,
+      +body.userId,
+      +body.punishmentId,
     );
   }
 }

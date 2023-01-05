@@ -18,9 +18,9 @@ export class UsersService {
   find(username: string): Promise<User> {
     return this.prisma.user.findUnique({
       where: { username },
-      // include: {
-      //   punishments: id === currentUserId,
-      // },
+      include: {
+        punishments: true,
+      },
     });
   }
 
@@ -30,6 +30,9 @@ export class UsersService {
         id: {
           not: currentUserId,
         },
+      },
+      include: {
+        punishments: true,
       },
     });
   }
