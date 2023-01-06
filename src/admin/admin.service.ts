@@ -117,12 +117,7 @@ export class AdminService {
           };
         }
       }
-
-      return {
-        message: 'No punishments to delete found',
-      };
     } catch (err: any) {
-      console.log(err);
       throw new BadRequestException(err.message);
     }
   }
