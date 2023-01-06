@@ -99,9 +99,38 @@ export class ChatroomsService {
         statusCode: 401,
       });
 
+    const usersId = await this.prisma.user.findMany({
+      where: {
+        OR: [
+          {
+            username: {
+              in: body.users,
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const usersArrIds: { id: number }[] = usersId?.map((user) => ({
+      id: user.id,
+    }));
+
+    usersArrIds.push({ id: room.userOwnerId });
+
     return this.prisma.chatroom.update({
       where: { id: roomId },
-      data: { ...body },
+      data: {
+        ...body,
+        users: {
+          set: usersArrIds,
+        },
+      },
+      include: {
+        users: true,
+      },
     });
   }
 

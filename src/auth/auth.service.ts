@@ -109,7 +109,7 @@ export class AuthService {
   }
 
   async signout(id: User['id']): Promise<{ message: string }> {
-    await this.usersService.updateIsOnlineStatus(id, true);
+    await this.usersService.updateIsOnlineStatus(id, false);
 
     return {
       message: 'Signed out',

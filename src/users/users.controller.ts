@@ -6,7 +6,6 @@ import {
   NotFoundException,
   Param,
   Patch,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
@@ -38,12 +37,15 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/:id')
-  async findOne(@Param('id') id: string, @CurrentUser() user: User) {
+  @Get('/:username')
+  async findOne(
+    @Param('username') username: string,
+    @CurrentUser() user: User,
+  ) {
     try {
-      return await this.usersService.find(parseInt(id), user.id);
+      return await this.usersService.find(username);
     } catch (error) {
-      throw new NotFoundException(`User not found with given id: ${id}`);
+      throw new NotFoundException(`User not found with given id: ${username}`);
     }
   }
 

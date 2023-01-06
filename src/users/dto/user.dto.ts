@@ -36,4 +36,7 @@ export class UserDto {
 
   @Expose()
   isOnline: boolean;
+
+  @Expose()
+  isAdmin: boolean;
 }

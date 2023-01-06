@@ -12,4 +12,8 @@ export class UpdateChatroomDto {
   @IsString({ each: true })
   @IsOptional()
   profanityWords?: string[];
+
+  @IsString({ each: true })
+  @IsOptional()
+  users?: string[];
 }

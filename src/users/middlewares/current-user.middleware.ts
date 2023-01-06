@@ -2,11 +2,11 @@ import {
   BadRequestException,
   Injectable,
   NestMiddleware,
-  NotFoundException,
 } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { UsersService } from '../users.service';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 
 declare global {
   namespace Express {
@@ -17,9 +17,9 @@ declare global {
 }
 
 interface UserFromTokenPayload {
-  sub: number;
-  email: string;
-  username: string;
+  sub: User['id'];
+  email: User['email'];
+  username: User['username'];
   exp: number;
   iat: number;
 }
@@ -69,7 +69,7 @@ export class CurrentUserMiddleware implements NestMiddleware {
         },
       );
 
-      req.currentUser = await this.usersService.find(userFromToken.sub);
+      req.currentUser = await this.usersService.find(userFromToken.username);
     }
 
     next();

@@ -36,7 +36,7 @@ model Chatroom {
   profanityWords String[]
   isPrivate      Boolean      @default(false)
   createdAt      DateTime     @default(now())
-  Punishment     Punishment[]
+  punishments    Punishment[]
   roomAvatar     String       @default("")
 
   @@map("chatrooms")
@@ -62,6 +62,7 @@ model Punishment {
   createdAt  DateTime       @default(now())
   reason     String
   duration   Int?
+  givenBy    String
 }
 
 enum PunishmentType {
