@@ -1,11 +1,14 @@
 import { User } from '@prisma/client';
 import { Expose, Transform } from 'class-transformer';
 import { MessageDto } from '../../messages/dto/message.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ChatroomDto {
+  @ApiProperty()
   @Expose()
   id: number;
 
+  @ApiProperty()
   @Transform(({ obj }) =>
     obj.messages?.map((message: MessageDto) => ({
       id: message.id,
@@ -26,6 +29,7 @@ export class ChatroomDto {
   @Expose()
   messages: MessageDto[];
 
+  @ApiProperty()
   @Transform(({ obj }: { obj: { users: User[] } }) =>
     obj.users?.map((user) => ({
       id: user.id,
@@ -36,18 +40,23 @@ export class ChatroomDto {
   @Expose()
   users: { id: number }[];
 
+  @ApiProperty()
   @Expose()
   userOwnerId: number;
 
+  @ApiProperty()
   @Expose()
   isPrivate: boolean;
 
+  @ApiProperty()
   @Expose()
   name: string;
 
+  @ApiProperty()
   @Expose()
   profanityWords: string[];
 
+  @ApiProperty()
   @Expose()
   roomAvatar: string;
 }

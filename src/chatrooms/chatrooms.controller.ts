@@ -16,12 +16,28 @@ import { CurrentUser } from '../users/decorators/current-user.decorator';
 import { CreateChatroomDto } from './dto/create-chatroom.dto';
 import { JwtAuthGuard } from '../utils/jwt/jwt-auth.guard';
 import { UpdateChatroomDto } from './dto/update-room.dto';
+import {
+  ApiBody,
+  ApiHeader,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { SwaggerDecorator } from '../decorators/swagger.decorator';
 
 @Serialize(ChatroomDto)
 @Controller('chatrooms')
 export class ChatroomsController {
   constructor(private chatroomsService: ChatroomsService) {}
 
+  @SwaggerDecorator(
+    'chatrooms',
+    'Find all joined chatrooms by current logged user',
+    { status: 400, description: 'Token expired' },
+    { status: 200, description: 'Chatrooms array' },
+    { name: 'Bearer <token>', description: 'JWT token' },
+  )
   @UseGuards(JwtAuthGuard)
   @Get('/joined')
   findJoined(@CurrentUser() user: User): Promise<Chatroom[]> {
@@ -34,12 +50,17 @@ export class ChatroomsController {
     return this.chatroomsService.findAll();
   }
 
+  @ApiTags('chatrooms')
+  @ApiOperation({ summary: 'Find chatroom by id' })
+  @ApiResponse({ status: 400, description: 'Token expired' })
+  @ApiQuery({ name: 'id', type: 'number', required: true })
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   find(@Param('id') id: string): Promise<Chatroom> {
     return this.chatroomsService.find(+id);
   }
 
+  @ApiBody({ type: [CreateChatroomDto] })
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
