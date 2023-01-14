@@ -17,23 +17,21 @@ import { MessageDto } from './dto/message.dto';
 import { JwtAuthGuard } from '../utils/jwt/jwt-auth.guard';
 
 @Serialize(MessageDto)
+@UseGuards(JwtAuthGuard)
 @Controller('messages')
 export class MessagesController {
   constructor(private messagesService: MessagesService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.messagesService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/room/:roomId')
   getRoomMessages(@Param('roomId') roomId: string) {
     return this.messagesService.getRoomMessages(+roomId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('/:roomId')
   sendMessage(
     @Param('roomId') roomId: string,
@@ -43,7 +41,6 @@ export class MessagesController {
     return this.messagesService.sendMessage(+roomId, user.id, body.message);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch('/:roomId/:messageId')
   updateMessage(
     @Param('roomId') roomId: string,
@@ -59,7 +56,6 @@ export class MessagesController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('/:roomId')
   deleteMessage(
     @Param('roomId') roomId: string,
