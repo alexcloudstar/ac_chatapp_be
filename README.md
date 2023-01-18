@@ -1,73 +1,78 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+<div align="center">
+<img src="https://www.alexcloudstar.com/_next/image?url=https://media.graphassets.com/q3eD0G45S8G5dksnIkPm&w=640&q=75" />
+</div>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h1>Chat App V2</h1>
+is the upgraded application of KSChat (app which is just available though repo and no preview https://github.com/alexcloudstar/ac-chat-app
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**On this app you can do the following:**
 
-## Description
+  
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<h2>User features:</h2>
 
-## Installation
+-   Create an account
+-   Log In / Log out
+-   View your profile
+-   **You can see user other users profile. And the users will have a badge which indicates if user is admin/user**
+-   Customise your profile with the following: name, username, profile picture (which is need to be an URL to a photo), email, password.
+-   You can be admin/user.
+-   As user you can create new chat rooms with the following customisations: room name, profanity words (these words if they are entered will be replaced by Asterix. Example: If we have profanity words set to: drug, drugs. When a user is typing drug or drugs will be replaced by ****.) you can select users which they are invited into the room, and room avatar (which as the same on user needs to be a link to an image). On the BE there are more routes for example leave a chat room but they are not implemented into the UI due to this is a portfolio item and it has no use at this very moment for production even if it can be used for.
+-   You can see users status such as online/offline. As presented into photo under the photo it will be green circle which indicates the user is online or gray if the user is offline. These statuses changed on log in / log out or focus/unfocuse the tab with the app
+-   On the chat list, you can see the image of room, title,  who was creating the room. And under that on the left side you can see the last message. And on the right side is the hour when the message has been sent.
+-   When you create a new room a default message will be assigned as first message: Welcome to the chatroom! ⚡️
+-   Into the chat you can edit the room with the things above I presented on creating a room.
+-   You can send messages either press enter or on press send button in **real time**.
+-   You can select emoji from emoji picker
+-   You can search for rooms.
+-   When user have any punishment it will not be able to access the chatroom until the punishment is expired.
 
-```bash
-$ npm install
-```
+<h2>Admin features:</h2>
 
-## Running the app
+-   All users features
+-   Can give ban/mute for a period of time. 5, 10, 15, 30, 60, 120 minutes. Or 24 hours. Or permanent.
 
-```bash
-# development
-$ npm run start
+  
 
-# watch mode
-$ npm run start:dev
+<h3>BE Technologies:</h3>
 
-# production mode
-$ npm run start:prod
-```
+-   NestJS
+-   PrismaJS
+-   Passport
+-   JWT
+-   Socket.io
+-   Docker
+-   PostgreSQL
+-   Prettier
+-   ESLint
 
-## Test
+  
 
-```bash
-# unit tests
-$ npm run test
+<h3>FE Technologies:</h3>
 
-# e2e tests
-$ npm run test:e2e
+- ReactJS
+- Redux
+- Typescript
+- React Select
+- React Router DOM
+- React Redux
+- React Hook Form
+- Emoji Picker React
+- Swiper
+- Socket.io
+- Tailwind
+- Chromatic
+- Storybook
+- ESLint
+- StyleLint
+- PostCSS
+- Husky
+- Prettier
+- Vite
+- React Icons
 
-# test coverage
-$ npm run test:cov
-```
+<h3>Deployment: </h3>
 
-## Support
+Frontend is hosted on **[vercel.com](http://vercel.com)**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Backend is hosted on **[aws.com](http://aws.com)**
