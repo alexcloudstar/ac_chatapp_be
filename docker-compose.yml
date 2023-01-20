@@ -20,7 +20,7 @@ services:
       - api
   backend:
     container_name: backend
-    build: .
+    image: alexcloudstar/chatapp-v2:latest
     ports:
       - '4000:4000'
     volumes:
