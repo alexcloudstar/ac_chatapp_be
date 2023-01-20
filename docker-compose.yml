@@ -20,17 +20,18 @@ services:
       - api
   backend:
     container_name: backend
-    image: alexcloudstar/chatapp-v2:latest
+    build: .
     ports:
       - '4000:4000'
     volumes:
       - .:/app
       - /app/node_modules
       - /app/prisma
-    environment:
-      - NODE_ENV=development
+      - /app/dist
     env_file:
       - .env
+    environment:
+      - NODE_ENV=${NODE_ENV}
     links:
       - postgres
     depends_on:

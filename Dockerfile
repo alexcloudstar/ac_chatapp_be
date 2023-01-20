@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18 as base
 
 WORKDIR /app
 
@@ -17,8 +17,18 @@ COPY . .
 
 COPY .env /app/
 
-ENV NODE_ENV development
-
 EXPOSE 4000
 
+FROM base as development
+
+ENV ARG NODE_ENV
+
 CMD [ "yarn", "start:dev"]
+
+FROM base as production
+
+RUN yarn build
+
+ENV ARG NODE_ENV
+
+CMD [ "yarn", "start:prod"]
