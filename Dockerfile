@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18 as base
 
 WORKDIR /app
 
@@ -15,10 +15,25 @@ RUN prisma generate
 
 COPY . .
 
-COPY .env /app/
 
-ENV NODE_ENV development
+FROM base as development
+
+COPY .env /app/
 
 EXPOSE 4000
 
+ENV ARG NODE_ENV=development
+
 CMD [ "yarn", "start:dev"]
+
+FROM base as production
+
+RUN yarn build
+
+COPY .env /app/
+
+EXPOSE 4000
+
+ENV ARG NODE_ENV=production
+
+CMD [ "yarn", "start:prod"]
