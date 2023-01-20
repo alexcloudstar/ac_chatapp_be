@@ -18,11 +18,11 @@ import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../utils/jwt/jwt-auth.guard';
 
 @Serialize(UserDto)
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('/whoami')
   whoami(@CurrentUser() user: User) {
     if (!user) throw new NotFoundException(`You are not logged in`);
@@ -30,13 +30,11 @@ export class UsersController {
     return user;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@CurrentUser() user: User): Promise<User[]> {
     return this.usersService.findAll(user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/:username')
   async findOne(
     @Param('username') username: string,
@@ -49,13 +47,11 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   removeUser(@Param('id') id: string, @CurrentUser() user: User) {
     return this.usersService.remove(parseInt(id), user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch('update-user/:id')
   updateUser(
     @Param('id') id: string,

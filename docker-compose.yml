@@ -28,7 +28,7 @@ services:
       - /app/node_modules
       - /app/prisma
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
     env_file:
       - .env
     links:

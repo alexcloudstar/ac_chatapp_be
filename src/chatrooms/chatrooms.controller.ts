@@ -18,29 +18,26 @@ import { JwtAuthGuard } from '../utils/jwt/jwt-auth.guard';
 import { UpdateChatroomDto } from './dto/update-room.dto';
 
 @Serialize(ChatroomDto)
+@UseGuards(JwtAuthGuard)
 @Controller('chatrooms')
 export class ChatroomsController {
   constructor(private chatroomsService: ChatroomsService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('/joined')
   findJoined(@CurrentUser() user: User): Promise<Chatroom[]> {
     return this.chatroomsService.findJoined(+user?.id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(): Promise<Chatroom[]> {
     return this.chatroomsService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/:id')
   find(@Param('id') id: string): Promise<Chatroom> {
     return this.chatroomsService.find(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   create(
     @Body() body: CreateChatroomDto,
@@ -56,13 +53,11 @@ export class ChatroomsController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('/:id/join')
   join(@Param('id') id: string, @Body() body: any): Promise<Chatroom> {
     return this.chatroomsService.join(+id, +body.userId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('/:id/invite')
   invite(
     @Param('id') id: string,
@@ -71,7 +66,6 @@ export class ChatroomsController {
     return this.chatroomsService.invite(+id, +body.userId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('/:id/leave')
   leave(
     @Param('id') id: string,
@@ -80,7 +74,6 @@ export class ChatroomsController {
     return this.chatroomsService.leave(+id, +body.userId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch('/:id')
   update(
     @Param('id') id: string,
@@ -90,7 +83,6 @@ export class ChatroomsController {
     return this.chatroomsService.update(+id, body, user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   delete(
     @Param('id') id: string,

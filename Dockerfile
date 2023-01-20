@@ -17,8 +17,8 @@ COPY . .
 
 COPY .env /app/
 
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 EXPOSE 4000
 
-CMD [ "yarn", "start:prod"]
+CMD [ "yarn", "start:dev"]
