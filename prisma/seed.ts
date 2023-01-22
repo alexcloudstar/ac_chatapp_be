@@ -52,7 +52,6 @@ async function main() {
         'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/91/918de69a31441329600a1b55d55d673df559356c_full.jpg',
     },
   });
-  console.log({ test, test2, test3, test4, admin });
 }
 main()
   .then(async () => {
