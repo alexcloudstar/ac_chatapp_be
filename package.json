@@ -2,8 +2,8 @@
   "name": "kitchat-v2",
   "version": "0.0.1",
   "description": "A real time app messaging",
-  "private": true,
-  "license": "UNLICENSED",
+  "private": false,
+  "license": "MIT",
   "keywords": [
     "chat",
     "chatapp",
